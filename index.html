@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="uz" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>iPhone 16 Pro Max — Next‑Gen Landing</title>
+  <meta name="description" content="Premium landing sahifa — iPhone 16 Pro Max uchun, noyob animatsiyalar: 3D tilt, parallax, dynamic island, liquid button, scroll-reveal, spotlight va boshqalar."/>
+  <style>
+    :root{
+      --bg:#05060a;
+      --ink:#eaeef8;
+      --muted:#98a2b3;
+      --brand:#6aa8ff;
+      --accent:#9d7aff;
+      --glow:#7cf2ff;
+      --card:#0b0e16;
+      --glass:rgba(255,255,255,.06);
+      --radius:26px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "SF Pro Display", Arial, sans-serif;
+      color:var(--ink); background:var(--bg); overflow-x:hidden;
+    }
+
+    /* ===== Background Cosmos + Spotlight (follows cursor) ===== */
+    .space{
+      position:fixed; inset:0; z-index:-2; pointer-events:none;
+      background:
+        radial-gradient(1200px 800px at var(--mx,50%) var(--my,50%), rgba(109,156,255,.20), transparent 60%),
+        conic-gradient(from 0deg at 80% 20%, #0b1224, #0b0f1b 45%, #0b152b 60%, #0b0f1b 90%, #0b1224);
+      filter:saturate(120%);
+    }
+    .stars{position:fixed; inset:-10% -10% -10% -10%; z-index:-3; background-image:radial-gradient(#fff8 1px, transparent 1px);
+      background-size: 3px 3px; opacity:.13; transform:translateZ(0); animation: drift 60s linear infinite;}
+    @keyframes drift{from{transform:translate3d(0,0,0)} to{transform:translate3d(-200px,-100px,0)}}
+
+    /* ===== Header ===== */
+    header{
+      position:sticky; top:0; z-index:50; backdrop-filter:saturate(160%) blur(8px);
+      background:linear-gradient(180deg, rgba(10,12,20,.9), rgba(10,12,20,.4) 60%, transparent);
+      border-bottom:1px solid #ffffff12;
+    }
+    .wrap{max-width:1160px; margin:0 auto; padding:16px 20px;}
+    nav{display:flex; align-items:center; gap:16px;}
+    .logo{font-weight:800; letter-spacing:.5px}
+    .nav-actions{margin-left:auto; display:flex; gap:10px;}
+    .chip{padding:8px 12px; border:1px solid #ffffff1a; border-radius:999px; color:#cfd6e4; font-size:13px; background:#0d1322;}
+
+    /* ===== Hero ===== */
+    .hero{position:relative; display:grid; grid-template-columns: 1.05fr .95fr; gap:30px; align-items:center; min-height:86vh; padding:64px 20px 24px;}
+    .eyebrow{color:var(--muted); letter-spacing:.18em; text-transform:uppercase; font-size:12px;}
+    h1{font-size: clamp(34px, 6vw, 72px); line-height:1.02; margin:.2em 0 .3em;}
+    .lead{font-size: clamp(16px, 2.4vw, 20px); color:#c9d2e9; max-width:52ch}
+
+    /* Liquid / Magnetic CTA */
+    .cta{position:relative; display:inline-grid; place-items:center; margin-top:22px}
+    .goo{position:absolute; inset:-24px; filter:url(#gooey)}
+    .btn{
+      position:relative; isolation:isolate;
+      padding:14px 22px; border-radius:999px; background:linear-gradient(135deg, var(--brand), var(--accent));
+      box-shadow: 0 10px 30px #6aa8ff33, 0 6px 20px #9d7aff24; border:none; color:white; font-weight:700;
+      transform: translateZ(0); transition: transform .2s ease;
+    }
+    .btn:hover{transform: translateY(-2px)}
+    .blob{position:absolute; width:16px; height:16px; background:linear-gradient(180deg, #a6c8ff, #8b74ff);
+      border-radius:50%; mix-blend-mode:screen; opacity:.9; filter:blur(.2px);}
+
+    /* Phone 3D Card */
+    .phone-wrap{ perspective: 1200px; justify-self:end;}
+    .phone{
+      --rx: 0deg; --ry: 0deg; --tz: 0px; --flip: 0deg;
+transform: rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--flip))) translateZ(var(--tz));
+
+      box-shadow: 0 60px 120px #0008, inset 0 0 0 1px #ffffff1a;
+      background:radial-gradient(120% 100% at 10% 0%, #1b2744, #0f1424 60%);
+      overflow:hidden;
+    }
+    .bezel{position:absolute; inset:10px; border-radius:40px; background:linear-gradient(180deg,#0a0d14,#0a0d14);
+      box-shadow: inset 0 0 0 2px #1a2238, inset 0 0 0 10px #000;}
+    .screen{position:absolute; inset:16px; border-radius:34px; overflow:hidden; background:black}
+
+    /* 3D faces */
+    .front, .back{ position:absolute; inset:0; border-radius:48px; backface-visibility:hidden; overflow:hidden; }
+    .front{}
+    .back{ transform: rotateY(180deg); background:linear-gradient(135deg,#161925,#0b0e16); display:grid; place-items:center;}
+
+    /* Back — glass panel + camera cluster */
+    .back-panel{ position:absolute; inset:18px; border-radius:38px; background:linear-gradient(180deg,#0f1321,#0c0f19); border:1px solid #ffffff10; box-shadow: inset 0 0 40px #000a, 0 20px 60px #0007; }
+    .apple{ position:absolute; inset:auto 0 38% 0; margin:auto; width:54px; height:54px; opacity:.5; filter:drop-shadow(0 2px 6px #000a);}
+
+    .cluster{ position:absolute; top:28px; left:28px; width:170px; height:170px; background:linear-gradient(180deg,#0f1220,#0a0d18); border-radius:28px; border:1px solid #ffffff12; box-shadow: inset 0 0 24px #0008, 0 8px 20px #0008; }
+    .lens{ position:absolute; width:56px; height:56px; border-radius:50%; background:radial-gradient(circle at 30% 30%, #203a4a, #0a0f16 60%); border:3px solid #1c2338; box-shadow: inset 0 0 22px #49f3, 0 4px 12px #000a;}
+    .lens::after{ content:""; position:absolute; inset:10px; border-radius:50%; background:radial-gradient(circle at 40% 40%, #9ef, transparent 60%); opacity:.5; filter:blur(2px);}
+    .l1{ top:18px; left:18px }
+    .l2{ top:18px; right:18px }
+    .l3{ bottom:18px; left:calc(50% - 28px) }
+    .flash{ position:absolute; width:22px; height:22px; border-radius:50%; right:18px; bottom:18px; background:radial-gradient(#fff,#ffd); box-shadow: 0 0 10px #fffb; border:2px solid #d8d8d8;}
+    .lidar{ position:absolute; width:18px; height:18px; border-radius:50%; left:18px; bottom:18px; background:#0b0f18; border:2px solid #1c2236; box-shadow: inset 0 0 8px #58f8; opacity:.7 }
+
+    /* Neon flow lines on back */
+    .neon{ position:absolute; inset:0; background: conic-gradient(from 0deg at 20% 30%, transparent, rgba(124,242,255,.08), transparent 30%),
+                                  conic-gradient(from 0deg at 80% 70%, transparent, rgba(157,122,255,.08), transparent 30%);
+            mix-blend-mode:screen; filter:blur(8px); animation: neonmove 8s linear infinite;}
+    @keyframes neonmove{ to{ transform: rotate(360deg); } }
+
+    /* Dynamic Island */
+    .island{ position:absolute; top:22px; left:50%; translate:-50% 0; width:160px; height:38px; background:#0b0b0f; border-radius:22px;
+      box-shadow: inset 0 0 0 1px #ffffff14, 0 6px 10px #0008; display:grid; grid-template-columns: 44px 1fr; align-items:center; padding:4px; gap:8px;}
+    .pill{height:100%; border-radius:18px; background:linear-gradient(180deg,#151622,#0e0f18)}
+    .notif{font-size:12px; color:#e8ecff; opacity:.9}
+
+    /* Wallpaper layers for parallax */
+    .layer{position:absolute; inset:0; background-position:center; background-size:cover; will-change:transform;}
+    .l1{background-image:radial-gradient(80% 60% at 50% 40%, #0ff2 0, transparent 60%), radial-gradient(70% 60% at 60% 70%, #66f2 0, transparent 60%)}
+    .l2{background-image: conic-gradient(from 90deg at 40% 60%, #5df 0, #7bf 30%, #a9f 60%, #5df 100%); mix-blend-mode:screen; opacity:.35}
+    .l3{background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1800"><defs><radialGradient id="g" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="%23ffffff" stop-opacity=".35"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="450" cy="600" r="260" fill="url(%23g)"/></svg>'); opacity:.4; mix-blend-mode:overlay}
+
+    /* Reflection + subtle sheen */
+    .sheen{position:absolute; inset:-40% -20%; background:linear-gradient(60deg, transparent 40%, rgba(255,255,255,.06) 50%, transparent 60%);
+      transform: translate3d(-40%, -20%, 50px) rotate(8deg);}
+
+    /* Sections */
+    section{padding:88px 20px; border-top:1px solid #ffffff10;}
+    .grid{max-width:1160px; margin:0 auto; display:grid; gap:24px}
+    .two{grid-template-columns: 1fr 1fr}
+    .feat{background:var(--glass); border:1px solid #ffffff16; padding:22px; border-radius:var(--radius);
+      box-shadow: 0 10px 30px #0006; display:grid; gap:8px}
+    .feat h3{margin:.2em 0}
+
+    /* Tech Specs Marquee */
+    .marquee{ position:relative; overflow:hidden; border-radius:var(--radius); border:1px solid #ffffff16; background:linear-gradient(180deg,#0d1220,#0a0f1a);}
+    .track{ display:flex; gap:24px; padding:16px 0; will-change:transform; animation: slide 22s linear infinite; }
+    .tag{white-space:nowrap; padding:10px 16px; background:#0f1629; border-radius:999px; border:1px solid #ffffff12; color:#d7dff2}
+    @keyframes slide{ to{ transform: translateX(-50%);} }
+
+    /* Color picker row (snap) */
+    .colors{display:flex; gap:16px; overflow:auto; scroll-snap-type:x mandatory; padding-bottom:8px}
+    .sw{ flex:0 0 200px; scroll-snap-align:center; border-radius:var(--radius); padding:16px; border:1px solid #ffffff16; background:var(--card);}
+    .sw .name{opacity:.8; font-size:14px;}
+    .sw .chip{display:inline-block; width:100%; height:120px; border-radius:16px; margin-top:10px}
+
+    /* Footer */
+    footer{padding:60px 20px; text-align:center; color:#a8b1c6;}
+
+    /* Reveal & motion utilities */
+    .reveal{opacity:0; transform: translateY(24px);}
+    .reveal.show{opacity:1; transform:none; transition: all .6s cubic-bezier(.2,.7,0,.9);}
+
+    /* Floating micro particles */
+    .floaty{position:absolute; inset:0; pointer-events:none}
+    .p{position:absolute; width:6px; height:6px; border-radius:50%; background:radial-gradient(#fff,#fff0); opacity:.6; filter:blur(.2px); animation: bob var(--dur) ease-in-out infinite alternate;}
+    @keyframes bob{ to{ transform: translateY(-16px) scale(1.08); opacity:.9 }}
+
+    /* Small screens */
+    @media (max-width:900px){
+      .hero{grid-template-columns: 1fr; gap:40px}
+      .phone-wrap{justify-self:center}
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="space" aria-hidden="true"></div>
+
+  <header>
+    <div class="wrap">
+      <nav>
+        <div class="logo">16 Pro Max</div>
+        <span class="chip">Titanium Edition</span>
+        <div class="nav-actions">
+          <a class="chip" href="#specs">Xususiyatlar</a>
+          <a class="chip" href="#colors">Ranglar</a>
+          <a class="chip" href="#buy">Buyurtma</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== HERO ===== -->
+    <section class="wrap hero">
+      <div>
+        <div class="eyebrow">Yangi avlod flagman</div>
+        <h1><span style="opacity:.6">iPhone</span> 16 Pro Max<br><span style="background:linear-gradient(90deg,var(--brand),var(--glow)); -webkit-background-clip:text; color:transparent">Cheksiz kuch. Nozik dizayn.</span></h1>
+        <p class="lead">3nm chip, Space‑Titanium korpus, AI kamera va 1–120Hz ProMotion. Pastdagi animatsiyalar mijozni hayratda qoldiradi.</p>
+
+        <div class="cta">
+          <!-- gooey filter -->
+          <svg class="goo" width="0" height="0">
+            <defs>
+              <filter id="gooey">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -9" result="goo" />
+                <feBlend in="SourceGraphic" in2="goo" />
+              </filter>
+            </defs>
+          </svg>
+          <button class="btn" id="magnetic">Buyurtma berish</button>
+          <div class="blob" style="--i:1"></div>
+          <div class="blob" style="--i:2"></div>
+          <div class="blob" style="--i:3"></div>
+        </div>
+      </div>
+
+      <!-- 3D phone card -->
+      <div class="phone-wrap">
+        <div class="phone" id="phone">
+          <div class="front">
+            <div class="bezel"></div>
+            <div class="screen">
+              <div class="island" id="island">
+                <div class="pill"></div>
+                <div class="notif">AirPods ulandi · 92%</div>
+              </div>
+              <div class="layer l1" data-depth=".06"></div>
+              <div class="layer l2" data-depth=".12"></div>
+              <div class="layer l3" data-depth=".18"></div>
+              <div class="sheen"></div>
+              <div class="floaty" id="floaty"></div>
+            </div>
+          </div>
+          <div class="back">
+            <div class="back-panel"></div>
+            <div class="cluster">
+              <div class="lens l1"></div>
+              <div class="lens l2"></div>
+              <div class="lens l3"></div>
+              <div class="flash"></div>
+              <div class="lidar"></div>
+            </div>
+            <svg class="apple" viewBox="0 0 100 100" aria-hidden="true">
+              <path fill="#cfd6e4" opacity=".7" d="M67.1 20.9c3.7-4.6 6.1-10.9 5.5-17-5.3.2-11.7 3.5-15.5 8.1-3.4 3.9-6.3 10.4-5.5 16.5 5.9.5 11.9-3 15.5-7.6zM85.9 73.7c-1.5 3.4-3.3 6.6-5.6 9.6-3 3.9-5.4 6.6-9.8 6.7-4.2.1-5.6-2-10.4-2-4.8 0-6.3 2-10.5 2.1-4.3.2-7.4-3.6-10.4-7.5-5.7-7.6-10.1-21.4-4.2-31 2.9-4.7 8-7.6 13.6-7.7 4.3-.1 8.4 2.9 10.4 2.9 2 0 7.1-3.5 12-3 2 .1 7.6.8 11.2 6-9.6 5.8-8 18.7 3.7 23z"/>
+            </svg>
+            <div class="neon"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section id="specs">
+      <div class="grid two">
+        <div class="feat reveal">
+          <h3>48MP ProRAW · AI Night</h3>
+          <p>Neural Engine sahnalarda shovqinni kamaytiradi, optik stabilizatsiya videoda kinoteatr darajasida.</p>
+        </div>
+        <div class="feat reveal">
+          <h3>A18 Pro · 3nm</h3>
+          <p>Grafika 26% tezroq, energiya samaradorligi yuqori. Real‑time ray‑tracing o‘yinlarda.</p>
+        </div>
+        <div class="feat reveal">
+          <h3>1–120Hz ProMotion</h3>
+          <p>Yopiq rejimda 1Hz — batareya tejaladi; gamerlar uchun 120Hz silliqlik.</p>
+        </div>
+        <div class="feat reveal">
+          <h3>Titanium Pro dizayn</h3>
+          <p>Engil va mustahkam. Nano‑texture orqa panel qo‘l izlarini kamroq ushlaydi.</p>
+        </div>
+      </div>
+
+      <div class="wrap" style="margin-top:28px">
+        <div class="marquee reveal">
+          <div class="track" id="track">
+            <div class="tag">6.9" Super Retina XDR</div>
+            <div class="tag">2796×1290 · 460 ppi</div>
+            <div class="tag">Up to 2,500 nits</div>
+            <div class="tag">A18 Pro Neural 38TOPS</div>
+            <div class="tag">USB‑C 20Gbps</div>
+            <div class="tag">Wi‑Fi 7</div>
+            <div class="tag">Titanium Frame</div>
+            <div class="tag">Spatial Video</div>
+            <!-- clone for infinite loop illusion -->
+            <div class="tag">6.9" Super Retina XDR</div>
+            <div class="tag">2796×1290 · 460 ppi</div>
+            <div class="tag">Up to 2,500 nits</div>
+            <div class="tag">A18 Pro Neural 38TOPS</div>
+            <div class="tag">USB‑C 20Gbps</div>
+            <div class="tag">Wi‑Fi 7</div>
+            <div class="tag">Titanium Frame</div>
+            <div class="tag">Spatial Video</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== COLORS ===== -->
+    <section id="colors">
+      <div class="wrap grid" style="gap:14px">
+        <h2 class="reveal">Rang kolleksiyasi</h2>
+        <div class="colors">
+          <div class="sw reveal" data-color="#a7b6c9,#6e7f94" data-name="Titanium Blue">
+            <div class="name">Titanium Blue</div>
+            <div class="chip" style="background:linear-gradient(135deg,#a7b6c9,#6e7f94)"></div>
+          </div>
+          <div class="sw reveal" data-color="#c8c8c8,#8c8c8c" data-name="Natural Titanium">
+            <div class="name">Natural Titanium</div>
+            <div class="chip" style="background:linear-gradient(135deg,#c8c8c8,#8c8c8c)"></div>
+          </div>
+          <div class="sw reveal" data-color="#1f1f27,#0e0f16" data-name="Space Black">
+            <div class="name">Space Black</div>
+            <div class="chip" style="background:linear-gradient(135deg,#1f1f27,#0e0f16)"></div>
+          </div>
+          <div class="sw reveal" data-color="#d7c7ff,#a895ff" data-name="Desert Purple">
+            <div class="name">Desert Purple</div>
+            <div class="chip" style="background:linear-gradient(135deg,#d7c7ff,#a895ff)"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BUY / CTA ===== -->
+    <section id="buy">
+      <div class="wrap grid two">
+        <div class="feat reveal">
+          <h3>Narxni hisoblagich</h3>
+          <p>Quyidagi saqlash hajmini tanlang — narx silliq animatsiya bilan yangilanadi.</p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin:8px 0">
+            <button class="chip" data-price="1299" data-gb="256">256GB</button>
+            <button class="chip" data-price="1399" data-gb="512">512GB</button>
+            <button class="chip" data-price="1599" data-gb="1024">1TB</button>
+          </div>
+          <div style="font-size:42px; font-weight:800"><span id="price">$1299</span></div>
+          <small style="color:var(--muted)">Narx marketing namuna sifatida ko‘rsatilgan.</small>
+        </div>
+        <div class="feat reveal">
+          <h3>Magnetik tugma + spotlight</h3>
+          <p>Sichqonchangizni harakatlantiring — fon yoritgichi, tugma esa sizga “yopishadi”. Bu elementlar mijozga jonli effekt beradi.</p>
+          <button class="btn" style="width:100%">Tezkor buyurtma</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 • Demo sahifa. Apple bilan bevosita bog‘liq emas.
+  </footer>
+
+  <script>
+    // ===== Spotlight follows cursor
+    const space = document.querySelector('.space');
+    window.addEventListener('pointermove', e=>{
+      const x = (e.clientX / window.innerWidth * 100).toFixed(2) + '%';
+      const y = (e.clientY / window.innerHeight* 100).toFixed(2) + '%';
+      space.style.setProperty('--mx', x);
+      space.style.setProperty('--my', y);
+    });
+
+    // ===== Magnetic Button with liquid blobs
+    const magnetic = document.getElementById('magnetic');
+    const cta = document.querySelector('.cta');
+    const blobs = cta.querySelectorAll('.blob');
+    cta.addEventListener('mousemove', (e)=>{
+      const r = magnetic.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width/2);
+      const dy = e.clientY - (r.top + r.height/2);
+      magnetic.style.transform = `translate(${dx*0.12}px, ${dy*0.12}px)`;
+      blobs.forEach((b,i)=>{
+        const s = (i+1)*10; b.style.left = e.clientX - r.left - s/2 + 'px'; b.style.top = e.clientY - r.top - s/2 + 'px'; b.style.width = b.style.height = s+'px';
+      })
+    });
+    cta.addEventListener('mouseleave', ()=>{
+      magnetic.style.transform = ''; blobs.forEach(b=>{b.style.left='-9999px'});
+    });
+
+    // ===== 3D Tilt Phone + Parallax Layers + Floating particles
+    const phone = document.getElementById('phone');
+    const layers = phone.querySelectorAll('.layer');
+    function tilt(e){
+      const r = phone.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - .5;
+      const py = (e.clientY - r.top ) / r.height - .5;
+      phone.style.setProperty('--ry', (px * 10) + 'deg');
+      phone.style.setProperty('--rx', (-py * 10) + 'deg');
+      layers.forEach(l=>{
+        const d = parseFloat(l.dataset.depth || .1);
+        l.style.transform = `translate3d(${px*-20*d}px, ${py*-30*d}px, ${d*60}px)`;
+      })
+    }
+    phone.addEventListener('pointermove', tilt);
+    phone.addEventListener('pointerleave', ()=>{
+      phone.style.setProperty('--ry','0deg'); phone.style.setProperty('--rx','0deg');
+      layers.forEach(l=> l.style.transform='');
+    });
+    // flip toggle on click
+    let flipped = false;
+    phone.addEventListener('click', ()=>{
+      flipped = !flipped;
+      phone.style.setProperty('--flip', flipped ? '180deg' : '0deg');
+    });
+
+      layers.forEach(l=> l.style.transform='');
+    ;
+
+    // Floating micro particles inside screen
+    const floaty = document.getElementById('floaty');
+    for(let i=0;i<18;i++){
+      const p = document.createElement('div'); p.className='p';
+      p.style.left = Math.random()*100+'%'; p.style.top = 40+Math.random()*50+'%';
+      p.style.setProperty('--dur', (2+Math.random()*3)+'s');
+      floaty.appendChild(p);
+    }
+
+    // ===== Dynamic Island pulse when near mouse
+    const island = document.getElementById('island');
+    window.addEventListener('pointermove', e=>{
+      const r = island.getBoundingClientRect();
+      const dx = Math.max(0, Math.min(1, 1 - Math.hypot(e.clientX - (r.left+r.width/2), e.clientY - (r.top+r.height/2)) / 240));
+      island.style.transform = `translate(-50%, 0) scale(${1 + dx*0.06})`;
+      island.style.boxShadow = `inset 0 0 0 1px #ffffff14, 0 ${6+dx*8}px ${10+dx*16}px #0008`;
+    });
+
+    // ===== Scroll reveal
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(el=>{
+        if(el.isIntersecting) el.target.classList.add('show');
+      })
+    },{threshold:.12});
+    document.querySelectorAll('.reveal, .feat').forEach(e=>io.observe(e));
+
+    // ===== Price counter
+    const priceEl = document.getElementById('price');
+    let current = 1299;
+    document.querySelectorAll('[data-price]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const target = +btn.dataset.price; const dir = target>current?1:-1; const steps = 26; let i=0;
+        const timer = setInterval(()=>{
+          i++; current += dir*Math.ceil(Math.abs(target-current)/(steps-i+1));
+          if((dir>0 && current>=target) || (dir<0 && current<=target)){current = target; clearInterval(timer);}
+          priceEl.textContent = `$${current}`;
+        }, 20);
+      })
+    })
+
+    // ===== Color picker: change phone wallpaper hues
+    document.querySelectorAll('.sw').forEach(card=>{
+      card.addEventListener('click', ()=>{
+        const [c1,c2] = card.dataset.color.split(',');
+        document.querySelector('.l1').style.backgroundImage = `radial-gradient(80% 60% at 50% 40%, ${hex2rgba(c1,0.5)} 0, transparent 60%), radial-gradient(70% 60% at 60% 70%, ${hex2rgba(c2,0.5)} 0, transparent 60%)`;
+      })
+    })
+    function hex2rgba(h,a){
+      const n = h.replace('#',''); const bigint = parseInt(n,16);
+      const r=(bigint>>16)&255, g=(bigint>>8)&255, b=bigint&255; return `rgba(${r},${g},${b},${a})`;
+    }
+
+    // ===== Subtle track speed change on hover
+    const track = document.getElementById('track');
+    track.addEventListener('mouseenter', ()=> track.style.animationDuration='36s');
+    track.addEventListener('mouseleave', ()=> track.style.animationDuration='22s');
+
+    // ===== Accessibility: reduce motion
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if(mq.matches){
+      document.querySelectorAll('*').forEach(el=> el.style.transition='none');
+      track.style.animation='none';
+    }
+  </script>
+</body>
+</html> bu kodda xato bormi
